@@ -61,6 +61,10 @@ def factory(raw_data, request):
     if _shade:
         return _shade
 
+    _shade = find_type(PalmBeach)
+    if _shade:
+        return _shade
+
     return BaseShade(raw_data, BaseShade.shade_types[0], request)
 
 
@@ -178,6 +182,7 @@ class ShadeBottomUp(BaseShade):
         shade_type(69, "Curtain track, Left stack"),
         shade_type(70, "Curtain track,Right stack"),
         shade_type(71, "Curtain track, Split stack"),
+        shade_type(5, "Roller Screen")
     )
 
     open_position = {ATTR_POSITION1: MAX_POSITION, ATTR_POSKIND1: 1}
@@ -254,3 +259,24 @@ class ShadeBottomUpTiltAnywhere(BaseShade):
     async def tilt_open(self):
         """Tilt vanes to close position."""
         return await self.move({ATTR_POSKIND1: 3, ATTR_POSITION1: MAX_POSITION})
+
+
+class PlantationShutter(ShadeBottomUpTilt):
+    shade_types = (shade_type(66, "Palm Beach Shutter"),)
+
+    can_tilt = True
+    can_move = False
+
+    allowed_positions = (
+        {ATTR_POSITION: {ATTR_POSKIND1: 3}, ATTR_COMMAND: ATTR_TILT},
+    )
+
+    open_position = {ATTR_POSITION1: MAX_POSITION, ATTR_POSKIND1: 3}
+    close_position = {ATTR_POSITION1: MIN_POSITION, ATTR_POSKIND1: 3}
+
+    async def tilt_close(self):
+        return await self.move({ATTR_POSKIND1: 3, ATTR_POSITION1: MIN_POSITION})
+
+    async def tilt_open(self):
+        return await self.move({ATTR_POSKIND1: 3, ATTR_POSITION1: 32767})
+
