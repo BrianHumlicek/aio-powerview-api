@@ -61,7 +61,7 @@ def factory(raw_data, request):
     if _shade:
         return _shade
 
-    _shade = find_type(PalmBeach)
+    _shade = find_type(PlantationShutter)
     if _shade:
         return _shade
 
@@ -182,7 +182,7 @@ class ShadeBottomUp(BaseShade):
         shade_type(69, "Curtain track, Left stack"),
         shade_type(70, "Curtain track,Right stack"),
         shade_type(71, "Curtain track, Split stack"),
-        shade_type(5, "Roller Screen")
+        shade_type(5, "Roller, Screen, Banded"),
     )
 
     open_position = {ATTR_POSITION1: MAX_POSITION, ATTR_POSKIND1: 1}
@@ -261,8 +261,8 @@ class ShadeBottomUpTiltAnywhere(BaseShade):
         return await self.move({ATTR_POSKIND1: 3, ATTR_POSITION1: MAX_POSITION})
 
 
-class PlantationShutter(ShadeBottomUpTilt):
-    shade_types = (shade_type(66, "Palm Beach Shutter"),)
+class PlantationShutter(BaseShade):
+    shade_types = (shade_type(66, "Palm Beach"),)
 
     can_tilt = True
     can_move = False
